@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#f8f6f0"/>
+<meta name="description" content="A small, personal Mexico City guide for Matt: art, design, food, and a cozy surprise."/>
+<title>For Matt · Mexico City</title>
+<link rel="preconnect" href="https://unpkg.com" crossorigin/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzx6J3oCozC2A6er9dSPlb4wE=" crossorigin="anonymous"/>
+<style>
+:root{--cream:#f8f6f0;--white:#fffefa;--ink:#223530;--sub:#66736b;--line:#dedbd0;--rust:#b46149;--teal:#275f5b;--gold:#e7b677;--blush:#f3e7da;--soft:#eeece3}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}a{color:var(--teal)}button{font:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--rust);outline-offset:3px}.wrap{max-width:1010px;padding:0 28px;margin:auto}.mast{display:flex;justify-content:space-between;align-items:center;padding:19px 0 15px;border-bottom:1px solid var(--line)}.wordmark{font:20px/1 Georgia,serif;letter-spacing:-.035em}.wordmark em{color:var(--rust)}.mast small,.edition{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#817a70;font-weight:700}.hero{padding:33px 0 27px}.eyebrow{color:var(--rust);font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:800}.hero h1{font:normal clamp(42px,6.5vw,76px)/.99 Georgia,serif;letter-spacing:-.06em;margin:10px 0 18px}.hero h1 em{font-weight:400;color:var(--teal)}.opening{max-width:740px;font:19px/1.5 Georgia,serif;letter-spacing:-.012em;margin:0}.opening em{color:var(--rust)}.signoff{color:#8d6557;margin:8px 0 0;font-family:Georgia,serif;font-size:15px;font-style:italic}.graphic{overflow:hidden;margin-top:24px;height:112px;background:#e8c5a5;position:relative}.graphic svg{height:100%;width:100%;display:block}.graphic-note{position:absolute;right:19px;bottom:14px;background:#214e4bbb;color:white;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:20px;font-size:9px;font-weight:750;backdrop-filter:blur(6px)}
+section.stops{margin:19px auto 0}.section-top{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-bottom:14px}.section-top h2,.tiles-head h2,.puebla h2{font:normal 33px/1.08 Georgia,serif;letter-spacing:-.045em;margin:5px 0 0}.section-top p{color:var(--sub);font-size:12px;max-width:300px;margin:0 0 1px}.filters{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 13px}.filter{border:1px solid #cfc9bc;border-radius:30px;background:transparent;color:#3b4b45;padding:8px 14px;font-size:12px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}.filter[aria-pressed="true"]{background:#f5e1c9;border-color:#d39c73;color:#694631;box-shadow:inset 0 0 0 1px #e8b992}.filter[data-filter="all"][aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:white;box-shadow:none}.filter:hover{border-color:var(--rust)}.filter .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--tone,transparent)}.filter[aria-pressed="true"] .dot{box-shadow:0 0 0 1px #ffffff55}.map-shell{position:relative;border:1px solid #d5d3c8;background:#e8ebdf;overflow:hidden}#map{width:100%;height:350px;z-index:1}.leaflet-container{font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.leaflet-popup-content-wrapper{border-radius:8px;box-shadow:0 8px 25px #0002}.leaflet-popup-content{margin:12px 15px;min-width:164px}.leaflet-popup-content strong{font-family:Georgia,serif;font-size:18px;font-weight:normal}.leaflet-popup-content small{display:block;color:var(--sub);margin:2px 0 9px}.leaflet-popup-content a{color:var(--teal);font-weight:650;text-decoration:none}.map-pin{height:18px;width:18px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);border:2px solid #fff;box-shadow:0 1px 6px #20312e55;background:var(--pin)}.map-pin:after{content:"";background:#fff;position:absolute;width:5px;height:5px;border-radius:100%;top:5px;left:5px}.map-fallback{display:none;position:absolute;z-index:4;inset:0;justify-content:center;align-items:center;text-align:center;background:#e8e8de;color:#42544c;padding:25px}.map-fallback h3{font:normal 27px Georgia,serif;margin:0 0 6px}.map-fallback p{max-width:350px;margin:0 auto 12px}.map-fallback a{display:inline-block;margin:3px;font-size:12px}.map-fallback.visible{display:block}.map-fallback .fallback-svg{display:block;width:100%;height:100%}.fallback-pin a{cursor:pointer}.fallback-pin a:hover circle:first-child{stroke:#ebce91;stroke-width:6}.fallback-pin[hidden]{display:none}.map-foot{display:flex;justify-content:space-between;gap:14px;padding:9px 3px 0;color:var(--sub);font-size:11px}
+.tiles{padding-top:30px}.tiles-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:15px}.tiles-head small{color:var(--sub);font-size:11px}.cards{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:10px}.place-card{border:1px solid var(--line);background:var(--white);min-width:0}.place-card[hidden]{display:none!important}.place-card summary{list-style:none;cursor:pointer;min-height:104px;display:flex;gap:13px;padding:16px 15px;align-items:flex-start}.place-card summary::-webkit-details-marker{display:none}.place-card summary:hover{background:#fdfbf6}.card-number{color:#b38b70;font:15px Georgia,serif;flex:0 0 23px;padding-top:5px}.card-middle{min-width:0;flex:1;display:flex;flex-direction:column}.card-category{color:var(--rust);font-size:9px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;line-height:1.3}.card-category i{font-style:normal;color:#a6a49c;margin:0 2px}.card-middle strong{font:normal 24px/1.09 Georgia,serif;letter-spacing:-.035em;margin:7px 0 4px}.teaser{font-size:12px;color:#657168;line-height:1.42}.plus{border:1px solid #cfccc0;width:22px;height:22px;flex:0 0 22px;border-radius:50%;position:relative;margin-top:4px}.plus:before,.plus:after{content:"";position:absolute;background:#6c7970}.plus:before{width:10px;height:1px;top:10px;left:5px}.plus:after{height:10px;width:1px;top:5px;left:10px;transition:transform .1s}.place-card[open] .plus:after{transform:rotate(90deg)}.place-card[open]{border-color:#bdb5a4;box-shadow:0 8px 23px #2f382509}.detail-body{border-top:1px solid #ece8df;padding:15px 18px 17px 52px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}.detail-writing p{margin:0 0 12px;color:#45544b;line-height:1.6;font-size:13px}.detail-writing .look{margin:0;color:#546a61;font-size:12px;border-left:2px solid var(--gold);padding-left:11px}.look span{display:block;font-weight:800;color:var(--rust);font-size:9px;letter-spacing:.12em;text-transform:uppercase}.card-links{display:flex;gap:15px;flex-wrap:wrap;margin:14px 0 0}.card-links a{font-size:11px;font-weight:700;text-underline-offset:3px}.place-photo{margin:0;max-width:100%;overflow:hidden}.place-photo img{display:block;width:100%;height:165px;object-fit:cover;background:#e4dfd3}.place-photo figcaption{font-size:9px;color:#858a81;line-height:1.5;padding:5px 0}.place-photo figcaption a{color:#718078}
+.afterword{margin:30px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0 22px;display:flex;align-items:center;gap:34px}.afterword .side{font-size:10px;color:var(--rust);letter-spacing:.17em;text-transform:uppercase;font-weight:800;flex:0 0 136px}.afterword p{font:19px/1.5 Georgia,serif;margin:0;letter-spacing:-.015em}.afterword em{color:var(--rust)}
+.puebla{padding:31px 0 25px}.puebla-top{display:flex;gap:26px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}.puebla-top h2{font-size:30px}.puebla-top p{font-size:12px;color:var(--sub);max-width:480px;margin:0}.puebla ul{padding:0;margin:16px 0 0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.puebla li{border-top:1px solid var(--line);padding:11px 0;display:flex;align-items:center;gap:11px;min-width:0}.pb-index{font:14px Georgia,serif;color:#b38b70}.puebla li div{flex:1;min-width:0}.puebla li strong{font-family:Georgia,serif;font-size:17px;line-height:1.3;font-weight:normal;display:block}.puebla li div span{font-size:11px;line-height:1.5;color:var(--sub);display:block;margin-top:2px}.pb-link{font-size:10px;text-decoration:none;white-space:nowrap;font-weight:700}.pb-link:hover{text-decoration:underline}.footer{border-top:1px solid var(--line);color:#88887f;padding:17px 0 27px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:11px}.footer .love{font:italic 18px Georgia,serif;color:var(--teal)}
+@media(min-width:940px){.place-card[open] .detail-body:has(.place-photo){grid-template-columns:1.1fr .9fr}.place-photo img{height:190px}}
+@media(max-width:700px){.wrap{padding:0 18px}.mast{padding:17px 0 14px}.mast small{font-size:9px}.hero{padding:26px 0 17px}.hero h1{font-size:clamp(43px,10vw,63px);margin:9px 0 14px}.opening{font-size:17px;line-height:1.47}.graphic{height:81px;margin-top:19px}.graphic-note{font-size:8px;padding:4px 8px;right:10px;bottom:10px}.section-top h2,.tiles-head h2{font-size:28px}.section-top p{max-width:none}.filters{gap:6px;margin:12px 0}.filter{font-size:11px;padding:8px 11px}.filter .dot{margin-right:5px;width:7px;height:7px}#map{height:265px}.map-foot{font-size:10px}.tiles{padding-top:27px}.cards{grid-template-columns:1fr;gap:8px}.place-card summary{min-height:86px;padding:13px 14px;gap:10px}.card-middle strong{font-size:22px;margin:4px 0 3px}.card-number{font-size:13px}.detail-body{padding:14px 15px 16px 48px}.detail-writing p{font-size:13px}.place-photo img{height:192px}.afterword{gap:6px;display:block;margin-top:24px;padding:18px 0}.afterword .side{margin-bottom:7px}.afterword p{font-size:17px}.puebla{padding:25px 0 17px}.puebla-top{gap:7px}.puebla-top h2{font-size:28px}.puebla ul{grid-template-columns:1fr;margin-top:12px}.puebla li{padding:10px 0}.footer{padding:17px 0 24px;gap:8px}.footer .love{font-size:16px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* A quiet apricot wash ties the chosen map mood to the short list. */
+.place-card.category-hit{background:#fff1e2;border-color:#ebcfb2;transition:background .18s,border-color .18s,box-shadow .18s}
+.place-card.category-hit summary:hover{background:#fbe9d4}
+.place-card.category-hit .detail-body{border-top-color:#eed5ba}
+.place-card.is-selected,.place-card.category-hit.is-selected{position:relative;background:#f9e2c8;border-color:#bd7d53;box-shadow:0 0 0 2px #d5a079,0 9px 22px #82563318}
+.place-card.is-selected summary,.place-card.category-hit.is-selected summary{background:#f8dec1}
+.place-card.is-selected .plus{background:#e7b383;border-color:#bd7d53}
+.place-card.is-selected .plus::before,.place-card.is-selected .plus::after{background:#6a3f2d}
+.place-card{scroll-margin-top:18px}
+.map-pin.is-selected{border-color:#fff0cd;box-shadow:0 0 0 4px #efb66a,0 1px 9px #20312e66}
+.fallback-pin.is-selected circle:first-child{stroke:#f8bf78;stroke-width:8}
+.fallback-pin.is-selected text{font-weight:900}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:white}.filters,#map,.map-fallback,.map-foot,.graphic-note{display:none!important}.cards{grid-template-columns:1fr 1fr}.place-card{break-inside:avoid}.puebla{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast"><div class="wordmark">A little guide <em>for Matt</em></div><small>Mexico City · November 2026</small></header>
+<main>
+<section class="hero" aria-labelledby="page-title">
+  <div class="eyebrow">For a very good eye</div>
+  <h1 id="page-title">Mexico City, <em>your way.</em></h1>
+  <p class="opening">Matt, I kept thinking about places you might love—not just for what’s on the walls, but for <em>how a building holds light</em>, or how a courtyard invites you to stay. These are a few favorites of mine. Follow your eye and get a little lost. ♡</p>
+  <p class="signoff">— M.</p>
+  <div class="graphic" role="img" aria-label="Abstract architectural composition of arches, geometric shapes, and warm colors">
+  <svg viewBox="0 0 1000 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect width="1000" height="130" fill="#e7b894"/><rect width="340" height="130" fill="#e9d9bd"/>
+  <circle cx="800" cy="28" r="100" fill="#ebaa64"/><path d="M-22 130V-30h300V130" fill="#b96148"/>
+  <path d="M47 130V36Q47 3 80 3h120v127" fill="#f0d4aa"/>
+  <path d="M104 130V71Q104 42 134 42h78v88" fill="#2d605c"/>
+  <path d="M149 130V91q0-16 15-16h58v55" fill="#deb071"/>
+  <path d="M320 130V-18h380v148" fill="#285550"/><path d="M445 130V-18h110v148" fill="#f2d5a9"/><path d="M700 130V-18h300v148" fill="#e4d0b9"/>
+  <path d="M700 130 1000 26v104Z" fill="#d68158"/><path d="M700 130 1000 86v44Z" fill="#184843"/>
+  <g fill="none" opacity=".43" stroke="#fff6e5"><path d="M330 -25v180M358 -25v180M386 -25v180M414 -25v180M442 -25v180M470 -25v180M498 -25v180M526 -25v180M554 -25v180M582 -25v180M610 -25v180M638 -25v180M666 -25v180"/><path d="M305 24h400M305 48h400M305 72h400M305 96h400"/></g>
+  </svg><span class="graphic-note">Art · light · something delicious</span></div>
+</section>
+<section id="map-section" class="stops" aria-labelledby="map-heading">
+  <div class="section-top"><div><span class="eyebrow">01 / Wander</span><h2 id="map-heading">The little map.</h2></div><p>Eight places in Mexico City. Choose a mood; the map and recommendations update together.</p></div>
+  <div class="filters" role="group" aria-label="Filter recommended places">
+    <button type="button" class="filter" data-filter="all" aria-pressed="true">All <span class="filter-count">(8)</span></button>
+    <button type="button" class="filter" data-filter="art" aria-pressed="false" style="--tone:#2d6661"><span class="dot" aria-hidden="true"></span>Art / Design</button>
+    <button type="button" class="filter" data-filter="food" aria-pressed="false" style="--tone:#b46149"><span class="dot" aria-hidden="true"></span>Food</button>
+    <button type="button" class="filter" data-filter="cozy" aria-pressed="false" style="--tone:#bb995f"><span class="dot" aria-hidden="true"></span>Cozy</button>
+  </div>
+  <div class="map-shell"><div id="map" role="region" aria-label="Interactive map of Mexico City recommendations"></div>
+    <div id="map-fallback" class="map-fallback"><svg class="fallback-svg" viewBox="0 0 940 350" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stylized geographic locator with numbered clickable pins over Mexico City neighborhoods">
+<rect width="940" height="350" fill="#e9e9dd"/>
+<path d="M0 20 160 0 475 112 940 50 940 350 0 350Z" fill="#e7e6dc"/>
+<path d="M226 40Q270 15 350 55L405 105 360 222 275 243 206 182Z" fill="#cfdccc"/>
+<path d="M245 70L334 160 389 188 465 180" fill="none" stroke="#f3f0e6" stroke-width="16"/>
+<g stroke="#fffdf5" fill="none" stroke-width="2.4" opacity=".75">
+<path d="M0 65 940 255M0 125 940 315M0 190 690 350M15 0 860 350M120 -15 935 320"/>
+<path d="M50 350 355 -10M158 350 463 -10M262 350 565 -10M377 350 677 -10M490 350 783 -10M620 350 914 -10M735 350 940 112"/>
+</g>
+<path d="M118 145Q290 180 415 167T674 134T940 135" stroke="#cbbd9f" stroke-width="8" fill="none" stroke-linecap="round"/>
+<path d="M118 145Q290 180 415 167T674 134T940 135" stroke="#f7f4e8" stroke-width="5" fill="none"/>
+<g font-size="12" fill="#8a9388" font-family="Arial,sans-serif" font-weight="700" letter-spacing="1.8"><text x="53" y="74">POLANCO</text><text x="246" y="98">CHAPULTEPEC</text><text x="475" y="95">ROMA NORTE</text><text x="388" y="304">CONDESA</text><text x="751" y="57">CENTRO</text></g>
+<text x="15" y="335" font-family="Arial,sans-serif" font-size="10" fill="#869389" letter-spacing="1.2">ILLUSTRATED LOCATOR · TAP A NUMBER TO READ ITS NOTE</text><g class="fallback-pin" data-fallback-cat="art"><a href="#place-jumex" data-open="jumex" aria-label="Read note for Museo Jumex"><circle cx="108.7" cy="85.8" r="22" fill="#2d6661" stroke="#fffdf6" stroke-width="4"/><text x="108.7" y="90.8" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">01</text><circle cx="108.7" cy="85.8" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="art"><a href="#place-tamayo" data-open="tamayo" aria-label="Read note for Museo Tamayo"><circle cx="341.3" cy="186.9" r="22" fill="#2d6661" stroke="#fffdf6" stroke-width="4"/><text x="341.3" y="191.9" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">02</text><circle cx="341.3" cy="186.9" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="art"><a href="#place-anthro" data-open="anthro" aria-label="Read note for Museo Nacional de Antropología"><circle cx="289.0" cy="184.6" r="22" fill="#2d6661" stroke="#fffdf6" stroke-width="4"/><text x="289.0" y="189.6" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">03</text><circle cx="289.0" cy="184.6" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="art"><a href="#place-omr" data-open="omr" aria-label="Read note for Galería OMR"><circle cx="563.2" cy="232.9" r="22" fill="#2d6661" stroke="#fffdf6" stroke-width="4"/><text x="563.2" y="237.9" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">04</text><circle cx="563.2" cy="232.9" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="food"><a href="#place-mendl" data-open="mendl" aria-label="Read note for Mendl Delicatessen"><circle cx="438.3" cy="284.8" r="22" fill="#b46149" stroke="#fffdf6" stroke-width="4"/><text x="438.3" y="289.8" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">05</text><circle cx="438.3" cy="284.8" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="food"><a href="#place-popular" data-open="popular" aria-label="Read note for Café El Popular"><circle cx="829.1" cy="128.5" r="22" fill="#b46149" stroke="#fffdf6" stroke-width="4"/><text x="829.1" y="133.5" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">06</text><circle cx="829.1" cy="128.5" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="food"><a href="#place-moro" data-open="moro" aria-label="Read note for Churrería El Moro"><circle cx="755.2" cy="123.5" r="22" fill="#b46149" stroke="#fffdf6" stroke-width="4"/><text x="755.2" y="128.5" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">07</text><circle cx="755.2" cy="123.5" r="29" fill="transparent"/></a></g><g class="fallback-pin" data-fallback-cat="cozy"><a href="#place-tovar" data-open="tovar" aria-label="Read note for Casa Guillermo Tovar de Teresa"><circle cx="483.7" cy="225.8" r="22" fill="#bb995f" stroke="#fffdf6" stroke-width="4"/><text x="483.7" y="230.8" font-family="Arial,sans-serif" font-size="15" fill="white" text-anchor="middle" font-weight="700">08</text><circle cx="483.7" cy="225.8" r="29" fill="transparent"/></a></g></svg></div>
+  </div>
+  <div class="map-foot"><span>Tap a pin to find its note below.</span><span id="showing">Showing 8 places</span></div>
+</section>
+<section class="tiles" id="places" aria-labelledby="tiles-heading">
+  <div class="tiles-head"><div><span class="eyebrow">02 / Look closer</span><h2 id="tiles-heading">The short list.</h2></div><small>Tap a tile for a little more. <span aria-hidden="true">＋</span></small></div>
+  <div class="cards" id="cards"><details class="place-card" id="place-jumex" data-cat="art">
+      <summary><span class="card-number">01</span><span class="card-middle"><span class="card-category">Art / Design <i aria-hidden="true">·</i> Nuevo Polanco</span><strong>Museo Jumex</strong><span class="teaser">A love letter to proportion, stone, and light.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>One of my favorite museum buildings in the city. David Chipperfield’s pale stone, thoughtful proportions, and beautifully controlled light are as rewarding as the art. Directly across the plaza is the silvery Museo Soumaya—spectacular outside, though its collection felt to me a bit like a wealthy family’s art garage. You may disagree! 😉</p><p class="look"><span>For your eye</span> The sawtooth roof, shaded ground floor, and the architectural conversation across the plaza.</p><div class="card-links"><a class="" href="https://www.fundacionjumex.org/en/visita" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Museo%20Jumex%20Miguel%20de%20Cervantes%20Saavedra%20303%2C%20Granada%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div><figure class="place-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Museo_Jumex.jpg?width=900" alt="Pale stone exterior of Museo Jumex, photographed with jacaranda trees" loading="lazy" referrerpolicy="no-referrer"/><figcaption>Photo: <a class="" href="https://commons.wikimedia.org/wiki/File:Museo_Jumex.jpg" target="_blank" rel="noopener noreferrer">Lirva Vallens <span aria-hidden="true">↗</span></a> · <a class="" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0 <span aria-hidden="true">↗</span></a></figcaption></figure></div>
+      </details>
+<details class="place-card" id="place-tamayo" data-cat="art">
+      <summary><span class="card-number">02</span><span class="card-middle"><span class="card-category">Art / Design <i aria-hidden="true">·</i> Chapultepec</span><strong>Museo Tamayo</strong><span class="teaser">A beautiful building and an even better approach.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>I love how the building seems to grow out of the park. The layered concrete forms, the open forecourt, and the spaces around it are quietly extraordinary. I would go even just for the architecture and grounds.</p><p class="look"><span>For your eye</span> The broad paved courtyard, low horizontal lines, and the building meeting the trees.</p><div class="card-links"><a class="" href="https://museotamayo.org/en/visita" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Museo%20Tamayo%20Paseo%20de%20la%20Reforma%2051%2C%20Bosque%20de%20Chapultepec%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div><figure class="place-photo"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c8/MUSEO_TAMAYO_-_ARQUITECTURA.jpg" alt="Layered concrete exterior of Museo Tamayo beside green lawns" loading="lazy" referrerpolicy="no-referrer"/><figcaption>Photo: <a class="" href="https://commons.wikimedia.org/wiki/File:MUSEO_TAMAYO_-_ARQUITECTURA.jpg" target="_blank" rel="noopener noreferrer">Museo Tamayo Arte Contemporáneo <span aria-hidden="true">↗</span></a> · <a class="" href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0 <span aria-hidden="true">↗</span></a></figcaption></figure></div>
+      </details>
+<details class="place-card" id="place-anthro" data-cat="art">
+      <summary><span class="card-number">03</span><span class="card-middle"><span class="card-category">Art / Design <i aria-hidden="true">·</i> Chapultepec</span><strong>Museo Nacional de Antropología</strong><span class="teaser">Big ideas, astonishing objects, extraordinary space.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>A magnificent museum of Mexico’s Indigenous cultures and history—and a remarkable architectural experience in its own right. Its vast courtyard and dramatic umbrella fountain are unforgettable. No need to see everything in one visit.</p><p class="look"><span>For your eye</span> The canopy reflected in wet stone and the interplay of pattern, scale, and shadow.</p><div class="card-links"><a class="" href="https://mna.inah.gob.mx/" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Museo%20Nacional%20de%20Antropolog%C3%ADa%20Av.%20Paseo%20de%20la%20Reforma%20s/n%2C%20Bosque%20de%20Chapultepec%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details>
+<details class="place-card" id="place-omr" data-cat="art">
+      <summary><span class="card-number">04</span><span class="card-middle"><span class="card-category">Art / Design <i aria-hidden="true">·</i> Roma Norte</span><strong>Galería OMR</strong><span class="teaser">Contemporary art in a compelling setting.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>One of the galleries I’d put high on your list. The exhibition rooms and architecture have a presence of their own, and the changing work always makes it interesting. A wonderful excuse to wander Roma.</p><p class="look"><span>For your eye</span> How the gallery’s surfaces and openings frame the work.</p><div class="card-links"><a class="" href="https://www.omr.art/" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Galer%C3%ADa%20OMR%20C%C3%B3rdoba%20100%2C%20Roma%20Norte%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details>
+<details class="place-card" id="place-mendl" data-cat="food">
+      <summary><span class="card-number">05</span><span class="card-middle"><span class="card-category">Food <i aria-hidden="true">·</i> Hipódromo / Condesa</span><strong>Mendl Delicatessen</strong><span class="teaser">Bagels, then a lovely surprise out back.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>Delicious bagels and a beautiful leafy patio tucked behind the deli. I think you’ll love the light and tropical-modernist feeling back there as much as the food. Ask to sit in the rear courtyard if you can.</p><p class="look"><span>For your eye</span> Filtered light, greenery, and that marvelous indoor–outdoor feeling.</p><div class="card-links"><a class="" href="https://mendl.mx/" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Mendl%20Delicatessen%20Citlalt%C3%A9petl%209%2C%20Hip%C3%B3dromo%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details>
+<details class="place-card" id="place-popular" data-cat="food">
+      <summary><span class="card-number">06</span><span class="card-middle"><span class="card-category">Food <i aria-hidden="true">·</i> Centro Histórico</span><strong>Café El Popular</strong><span class="teaser">The delicious bustle of an old-school institution.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>No curated minimalism here! This is a proper, busy Mexico City institution: comforting food, coffee, people coming and going, and a wonderful sense of everyday life. I love it for precisely that.</p><p class="look"><span>For your eye</span> The human theater of a busy café.</p><div class="card-links"><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Cafe+El+Popular+5+de+Mayo+50+CDMX" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Caf%C3%A9%20El%20Popular%20Av.%205%20de%20Mayo%2050%E2%80%9352%2C%20Centro%20Hist%C3%B3rico%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details>
+<details class="place-card" id="place-moro" data-cat="food">
+      <summary><span class="card-number">07</span><span class="card-middle"><span class="card-category">Food <i aria-hidden="true">·</i> Centro Histórico</span><strong>Churrería El Moro</strong><span class="teaser">Hot churros, hot chocolate. Enough said.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>An institution for good reason. Go for freshly made churros and a rich hot chocolate, preferably at the original Centro Histórico location. It is a perfect little indulgence between adventures.</p><p class="look"><span>For your eye</span> Its iconic blue-and-white details and the choreography behind the counter.</p><div class="card-links"><a class="" href="https://elmoro.mx/centro-historico/" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Churrer%C3%ADa%20El%20Moro%20Eje%20Central%20L%C3%A1zaro%20C%C3%A1rdenas%2042%2C%20Centro%20Hist%C3%B3rico%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details>
+<details class="place-card" id="place-tovar" data-cat="cozy">
+      <summary><span class="card-number">08</span><span class="card-middle"><span class="card-category">Cozy <i aria-hidden="true">·</i> Roma Norte</span><strong>Casa Guillermo Tovar de Teresa</strong><span class="teaser">An intimate house of history, objects, and atmosphere.</span></span><span class="plus" aria-hidden="true"></span></summary>
+      <div class="detail-body"><div class="detail-writing"><p>A lovely historic townhouse filled with traditional interiors, collected objects, and beautiful old-world details. A calmer, more intimate counterpoint to the monumental museums. Here is the twist: it is actually another Museo Soumaya location!</p><p class="look"><span>For your eye</span> Framed views through doorways, furniture, decorative details, and the quiet garden.</p><div class="card-links"><a class="" href="https://mexicocity.cdmx.gob.mx/venues/museo-soumaya-casa-guillermo-tovar-de-teresa/?lang=en" target="_blank" rel="noopener noreferrer">Details / website <span aria-hidden="true">↗</span></a><a class="" href="https://www.google.com/maps/search/?api=1&amp;query=Casa%20Guillermo%20Tovar%20de%20Teresa%20Valladolid%2052%2C%20Roma%20Norte%2C%20Mexico%20City%2C%20Mexico" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">↗</span></a></div></div></div>
+      </details></div>
+</section>
+<section class="afterword" aria-label="A personal note"><div class="side">One more thing ♡</div><p>None of these is homework. I’d rather you discover <em>one unexpected angle</em>, linger over breakfast, or find a street I’ve never seen. I hope you have the most wonderful time.</p></section>
+<section class="puebla" aria-labelledby="puebla-heading"><div class="puebla-top"><div><span class="eyebrow">An extra little thought · Puebla</span><h2 id="puebla-heading">Four possibilities.</h2></div><p>I haven’t been to these myself, but they surfaced in my research and struck me as very much your kind of place. Consider them leads, not personal endorsements.</p></div>
+<ul><li><span class="pb-index">01</span><div><strong>Museo Amparo</strong><span>Historic rooms, elegant contemporary interventions, and a rooftop with a view.</span></div><a class="pb-link" href="https://museoamparo.com/visit" target="_blank" rel="noopener noreferrer">Explore <span aria-hidden="true">↗</span></a></li>
+<li><span class="pb-index">02</span><div><strong>Museo Internacional del Barroco</strong><span>Toyo Ito’s extraordinary white curves and sculptural spaces.</span></div><a class="pb-link" href="https://museospuebla.puebla.gob.mx/museos/item/143-museo-internacional-del-barroco" target="_blank" rel="noopener noreferrer">Explore <span aria-hidden="true">↗</span></a></li>
+<li><span class="pb-index">03</span><div><strong>Biblioteca Palafoxiana</strong><span>A dream of bookshelves, symmetry, and astonishing perspective.</span></div><a class="pb-link" href="https://museospuebla.puebla.gob.mx/museos/item/11-biblioteca-palafoxiana" target="_blank" rel="noopener noreferrer">Explore <span aria-hidden="true">↗</span></a></li>
+<li><span class="pb-index">04</span><div><strong>Capilla del Rosario</strong><span>Gold, detail, and Baroque exuberance: the opposite of minimalism.</span></div><a class="pb-link" href="https://visita.pueblacapital.gob.mx/atractivos/los-imperdibles-de-puebla" target="_blank" rel="noopener noreferrer">Explore <span aria-hidden="true">↗</span></a></li></ul></section>
+</main>
+<footer class="footer"><span class="love">With affection, always. ♡</span><span>Made for Matt · 2026</span></footer>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<script>
+'use strict';
+const places=[{"id": "jumex", "name": "Museo Jumex", "cat": "art", "lat": 19.4405, "lng": -99.20371, "area": "Nuevo Polanco"}, {"id": "tamayo", "name": "Museo Tamayo", "cat": "art", "lat": 19.42576, "lng": -99.18169, "area": "Chapultepec"}, {"id": "anthro", "name": "Museo Nacional de Antropología", "cat": "art", "lat": 19.4261, "lng": -99.18664, "area": "Chapultepec"}, {"id": "omr", "name": "Galería OMR", "cat": "art", "lat": 19.4190583, "lng": -99.1606797, "area": "Roma Norte"}, {"id": "mendl", "name": "Mendl Delicatessen", "cat": "food", "lat": 19.4115, "lng": -99.1725, "area": "Hipódromo / Condesa"}, {"id": "popular", "name": "Café El Popular", "cat": "food", "lat": 19.43428, "lng": -99.1355, "area": "Centro Histórico"}, {"id": "moro", "name": "Churrería El Moro", "cat": "food", "lat": 19.435, "lng": -99.1425, "area": "Centro Histórico"}, {"id": "tovar", "name": "Casa Guillermo Tovar de Teresa", "cat": "cozy", "lat": 19.4201, "lng": -99.1682, "area": "Roma Norte"}];
+const colors={art:'#2d6661',food:'#b46149',cozy:'#bb995f'};
+document.querySelectorAll('.place-photo img').forEach(img=>img.addEventListener('error',()=>{img.closest('.place-photo').hidden=true}));
+const buttons=[...document.querySelectorAll('[data-filter]')];
+const cards=[...document.querySelectorAll('.place-card')];
+let active='all',selectedId=null,map,layer,markers=new Map();
+function syncHighlight(){
+ cards.forEach(card=>{
+  const chosen=card.id===`place-${selectedId}`;
+  card.classList.toggle('category-hit',active!=='all'&&card.dataset.cat===active);
+  card.classList.toggle('is-selected',chosen&&!card.hidden);
+ });
+ document.querySelectorAll('.fallback-pin').forEach(pin=>{
+  const id=pin.querySelector('[data-open]')?.dataset.open;
+  pin.classList.toggle('is-selected',id===selectedId);
+ });
+ markers.forEach((marker,id)=>{
+  const pin=marker.getElement()?.querySelector('.map-pin');
+  pin?.classList.toggle('is-selected',id===selectedId);
+ });
+}
+function selectPlace(id,scroll=true){
+ const card=document.getElementById(`place-${id}`);
+ if(!card)return;
+ if(card.hidden)applyFilter('all',false);
+ selectedId=id;
+ card.open=true;
+ syncHighlight();
+ if(scroll)requestAnimationFrame(()=>card.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'}));
+}
+function applyFilter(value,move=true){
+ active=value;
+ selectedId=null; // A fresh mood starts without an individual place highlighted.
+ buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===value)));
+ cards.forEach(c=>{c.hidden=!(value==='all'||c.dataset.cat===value)});
+ document.querySelectorAll('.fallback-pin').forEach(pin=>{if(value==='all'||pin.dataset.fallbackCat===value)pin.removeAttribute('hidden');else pin.setAttribute('hidden','')});
+ const filtered=places.filter(p=>value==='all'||p.cat===value);
+ document.getElementById('showing').textContent=`Showing ${filtered.length} ${filtered.length===1?'place':'places'}`;
+ if(map&&layer){
+  layer.clearLayers();markers.clear();const bounds=[];
+  for(const p of filtered){
+   const icon=L.divIcon({className:'',html:`<div class="map-pin" style="--pin:${colors[p.cat]}"></div>`,iconSize:[22,22],iconAnchor:[11,20]});
+   const marker=L.marker([p.lat,p.lng],{icon,title:`Open note: ${p.name}`,alt:`Open note for ${p.name}`}).addTo(layer);
+   marker.on('click',()=>selectPlace(p.id));
+   marker.bindTooltip(p.name,{direction:'top',offset:[0,-13]});
+   markers.set(p.id,marker);bounds.push([p.lat,p.lng]);
+  }
+  if(move&&bounds.length)map.fitBounds(bounds,{padding:[30,30],maxZoom:value==='cozy'?14:13,animate:false});
+ }
+ syncHighlight();
+}
+buttons.forEach(b=>b.addEventListener('click',()=>applyFilter(b.dataset.filter)));
+// The illustrated offline map uses these links; live Leaflet pins call selectPlace directly.
+document.addEventListener('click',e=>{
+ const link=e.target.closest('[data-open]');
+ if(!link)return;
+ e.preventDefault();
+ selectPlace(link.dataset.open);
+});
+// Opening a tile by hand is reflected on the pins too.
+cards.forEach(card=>card.addEventListener('toggle',()=>{
+ const id=card.id.replace(/^place-/,'');
+ if(card.open&&!card.hidden)selectedId=id;
+ else if(selectedId===id)selectedId=null;
+ syncHighlight();
+}));
+function showFallback(){document.getElementById('map-fallback').classList.add('visible')}
+function startMap(){if(typeof L==='undefined'){showFallback();return;}
+ try{map=L.map('map',{scrollWheelZoom:false,zoomControl:false,attributionControl:true,preferCanvas:true});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+  layer=L.layerGroup().addTo(map);applyFilter('all');setTimeout(()=>map.invalidateSize(),120);
+ }catch(e){showFallback()}}
+startMap();
+</script>
+</body>
+</html>
